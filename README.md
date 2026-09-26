@@ -2,8 +2,7 @@
 
 **Project context:** Independent portfolio project inspired by the software engineering skills used in Capital One's Technology Internship Program. This application was created for demonstration and was not commissioned, used, or endorsed by Capital One.
 
-This application checks simulated purchases against a small set of risk rules. Visitors can try the browser demo, while the separate Spring Boot API stores transactions and returns a summary. All example accounts and merchants are fictional.
-
+This application checks simulated purchases against a small set of risk rules. Visitors can try the browser demo, while the separate Spring Boot API stores transactions and returns a summary. 
 ## What It Does
 
 Enter an account, merchant, amount, category, country, and risk threshold. The monitor labels the transaction **APPROVED** or **REVIEW**, explains the matched rules, and shows recent activity and flagged counts.
