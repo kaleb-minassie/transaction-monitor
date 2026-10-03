@@ -1,10 +1,276 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="A simulated payment risk checker with configurable rules, activity history, and a Java Spring Boot API."><title>Transaction Monitor · Kaleb Minassie</title><link rel="stylesheet" href="styles.css"></head>
-<body><header class="topbar"><div class="brand"><span class="brandmark">KM</span><span>Kaleb Minassie <small>/ transaction monitor</small></span></div><span class="status"><i></i> Interactive demo</span></header>
-<main><div class="app-context"><span class="demo-note">Role alignment: Capital One · independent demo</span></div>
-<section class="project" id="transactions"><div class="project-head"><div><div class="eyebrow">JAVA · SPRING BOOT · REST · H2</div><h2>Transaction monitor</h2><p>Run a simulated payment through configurable risk rules. Every submission updates the activity log and summary.</p></div><div class="project-icon">↗</div></div>
-      <div class="workspace"><div class="panel"><div class="panel-title"><span>New transaction</span><span class="muted">RULE ENGINE</span></div><form id="transaction-form"><label>Account ID<input id="account" value="acct-1042" required maxlength="40"></label><label>Merchant<input id="merchant" value="Northline Electronics" required maxlength="80"></label><div class="row"><label>Amount (USD)<input id="amount" type="number" min="0.01" step="0.01" value="875.00" required></label><label>Category<select id="category"><option>Electronics</option><option>Groceries</option><option>Travel</option><option>Dining</option><option>Other</option></select></label></div><div class="row"><label>Country<input id="country" value="US" maxlength="2" required></label><label>Threshold (USD)<input id="threshold" type="number" min="1" step="1" value="1000" required></label></div><button class="primary" type="submit">Analyze transaction <span>→</span></button></form><p class="hint">Rules: amount over threshold, international purchase, or unusually high electronics spend ($750+).</p></div>
-      <div class="panel result-panel"><div class="panel-title"><span>Analysis</span><span class="muted">LIVE RESULT</span></div><div id="transaction-result" aria-live="polite" class="empty">Submit a transaction to see its risk assessment.</div><div class="metric-grid"><div><span id="txn-count">0</span><small>Analyzed</small></div><div><span id="flag-count">0</span><small>Flagged</small></div></div><div class="subheading">Recent activity</div><div id="transaction-log" class="log"><p class="muted">No transactions yet.</p></div></div></div>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An independent transaction risk monitoring demo with transparent rules and an interactive activity dashboard.">
+  <title>Transaction Monitor · Kaleb Minassie</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="identity" href="#top" aria-label="Kaleb Minassie, back to top">
+        <span class="identity-mark">KM</span>
+        <span>Kaleb Minassie<small>Transaction Monitor</small></span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#rules">Risk rules</a>
+        <a href="#about">About the project</a>
+      </nav>
+
+      <span class="header-status"><span></span> Interactive demo</span>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- This is an independent simulation, not a bank product. -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="red-line"></span>
+            INDEPENDENT FINTECH ENGINEERING PROJECT
+          </div>
+
+          <h1 id="hero-title">Every transaction<br><em>tells a story.</em></h1>
+
+          <p>
+            Analyze a simulated purchase, see exactly which rules were triggered,
+            and review activity as it happens.
+          </p>
+
+          <a class="hero-link" href="#dashboard">
+            Open the dashboard <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="hero-graphic" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+
+          <div class="graphic-card graphic-main">
+            <span class="graphic-kicker">TRANSACTION SIGNAL</span>
+            <div class="graphic-amount">$875.00</div>
+            <div class="graphic-merchant">Northline Electronics</div>
+            <div class="graphic-divider"></div>
+            <div class="graphic-row">
+              <span>Rule match</span>
+              <strong>Electronics ≥ $750</strong>
+            </div>
+          </div>
+
+          <div class="graphic-card graphic-decision">
+            <span class="decision-dot"></span>
+            Review recommended
+          </div>
+        </div>
+      </div>
     </section>
-<aside class="implementation"><div><span class="eyebrow">SOURCE CODE</span><h3>See how this app works.</h3><a class="download" href="source.zip" download>Download this project's source ↗</a></div><p>This live demo runs its sample processing in your browser. The source download includes the separate Java Spring Boot service, comments, tests, Docker setup, and instructions. The backend API and persistent database are not connected to this browser demo.</p></aside>
-</main><footer>Kaleb Minassie <span>Independent portfolio project · simulated data only</span></footer><script src="app.js"></script></body></html>
+
+    <div class="context-bar">
+      <span>Built by Kaleb Minassie</span>
+      <span>Inspired by engineering themes at Capital One · No affiliation or endorsement</span>
+    </div>
+
+    <section class="dashboard" id="dashboard" aria-labelledby="dashboard-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">LIVE WORKSPACE</span>
+          <h2 id="dashboard-title">Transaction dashboard</h2>
+          <p>Try the sample values or enter a fictional purchase of your own.</p>
+        </div>
+        <span class="demo-pill"><span></span> Browser simulation</span>
+      </div>
+
+      <!-- The summary updates after every submission. -->
+      <div class="metrics" aria-label="Session summary">
+        <div class="metric">
+          <span class="metric-label">TOTAL ANALYZED</span>
+          <strong id="txn-count">0</strong>
+          <span class="metric-foot">This browser session</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">NEEDS REVIEW</span>
+          <strong id="flag-count">0</strong>
+          <span class="metric-foot">Matched at least one rule</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">APPROVED</span>
+          <strong id="approved-count">0</strong>
+          <span class="metric-foot">No rules matched</span>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <section class="panel input-panel" aria-labelledby="input-title">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-step">01 / INPUT</span>
+              <h3 id="input-title">New transaction</h3>
+            </div>
+            <span class="panel-icon" aria-hidden="true">↗</span>
+          </div>
+
+          <p class="panel-description">
+            Enter a fictional purchase to see a transparent risk decision.
+          </p>
+
+          <form id="transaction-form">
+            <div class="form-row">
+              <label for="account">
+                Account ID
+                <input id="account" value="acct-1042" required maxlength="40">
+              </label>
+
+              <label for="merchant">
+                Merchant
+                <input id="merchant" value="Northline Electronics" required maxlength="80">
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label for="amount">
+                Amount (USD)
+                <input id="amount" type="number" min="0.01" step="0.01"
+                       value="875.00" required>
+              </label>
+
+              <label for="category">
+                Category
+                <select id="category">
+                  <option>Electronics</option>
+                  <option>Groceries</option>
+                  <option>Travel</option>
+                  <option>Dining</option>
+                  <option>Other</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-row">
+              <label for="country">
+                Country code
+                <input id="country" value="US" minlength="2" maxlength="2"
+                       pattern="[A-Za-z]{2}"
+                       title="Enter a two-letter country code" required>
+              </label>
+
+              <label for="threshold">
+                Amount threshold (USD)
+                <input id="threshold" type="number" min="1" step="0.01"
+                       value="1000" required>
+              </label>
+            </div>
+
+            <button class="analyze-button" type="submit">
+              Analyze transaction <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+
+          <div class="sample-actions" aria-label="Try a sample">
+            <span>TRY A SAMPLE</span>
+            <button type="button" data-sample="approved">Everyday purchase</button>
+            <button type="button" data-sample="international">International purchase</button>
+          </div>
+        </section>
+
+        <section class="panel decision-panel" aria-labelledby="decision-title">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-step">02 / DECISION</span>
+              <h3 id="decision-title">Risk assessment</h3>
+            </div>
+            <span class="live-label"><i></i> LIVE RESULT</span>
+          </div>
+
+          <div id="transaction-result" aria-live="polite" class="result-empty">
+            <span class="empty-icon" aria-hidden="true">◈</span>
+            <strong>Ready to analyze</strong>
+            <p>Submit a transaction to see its decision and the rules behind it.</p>
+          </div>
+
+          <div class="decision-note">
+            <span aria-hidden="true">ⓘ</span>
+            Rules are illustrative. This is not a real fraud or credit decision.
+          </div>
+        </section>
+      </div>
+
+      <section class="activity panel" aria-labelledby="activity-title">
+        <div class="activity-heading">
+          <div>
+            <span class="panel-step">SESSION HISTORY</span>
+            <h3 id="activity-title">Recent activity</h3>
+          </div>
+          <button id="clear-activity" type="button" disabled>Clear activity</button>
+        </div>
+
+        <div class="activity-labels" aria-hidden="true">
+          <span>MERCHANT</span>
+          <span>AMOUNT</span>
+          <span>DECISION</span>
+        </div>
+
+        <div id="transaction-log" class="activity-log" aria-live="polite">
+          <p class="activity-empty">No transactions yet. Analyze a purchase to begin.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="rules-section" id="rules" aria-labelledby="rules-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">HOW DECISIONS ARE MADE</span>
+          <h2 id="rules-title">Three explainable rules</h2>
+          <p>Each result shows exactly why it was approved or sent for review.</p>
+        </div>
+      </div>
+
+      <div class="rules-grid">
+        <article>
+          <span class="rule-number">01</span>
+          <h3>Amount threshold</h3>
+          <p>Review a purchase when its amount is greater than the threshold entered in the form.</p>
+        </article>
+        <article>
+          <span class="rule-number">02</span>
+          <h3>International purchase</h3>
+          <p>Review a purchase when the country code is anything other than US.</p>
+        </article>
+        <article>
+          <span class="rule-number">03</span>
+          <h3>Electronics spend</h3>
+          <p>Review an electronics purchase when its amount is at least $750.</p>
+        </article>
+      </div>
+    </section>
+
+    <aside class="source-banner" id="about">
+      <div>
+        <span class="section-kicker">BEHIND THE DEMO</span>
+        <h2>Explore the full implementation.</h2>
+        <p>
+          The public dashboard runs locally in your browser. The repository
+          includes a separate Java Spring Boot API, tests, Docker setup, and H2
+          persistence. The API is not connected to this page.
+        </p>
+      </div>
+
+      <a href="https://github.com/kaleb-minassie/transaction-monitor"
+         target="_blank" rel="noopener noreferrer">
+        View source on GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </aside>
+  </main>
+
+  <footer>
+    <span>© 2026 Kaleb Minassie</span>
+    <span>Independent portfolio project · simulated data only</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</body>
+</html>
