@@ -1,6 +1,6 @@
 # Transaction Monitor
 
-**Project context:** Independent portfolio project inspired by the software engineering skills used in Capital One's Technology Internship Program. This application was created for demonstration and was not commissioned, used, or endorsed by Capital One.
+**Project context:** Independent portfolio project inspired by the software engineering skills used in Capital One's Technology Internship Program.
 
 This application checks simulated purchases against a small set of risk rules. Visitors can try the browser demo, while the separate Spring Boot API stores transactions and returns a summary. 
 ## What It Does
