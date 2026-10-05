@@ -1,0 +1,229 @@
+.risk-lab {
+  margin: 60px auto;
+  max-width: 1180px;
+  padding: 38px;
+  background: #111d32;
+  color: #f4f7fb;
+  border-radius: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.risk-lab * {
+  box-sizing: border-box;
+}
+
+.risk-lab .lab-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.risk-lab .lab-kicker {
+  font: 700 11px/1.5 system-ui;
+  letter-spacing: 0.16em;
+  color: #99b7e9;
+}
+
+.risk-lab h2 {
+  font: 600 clamp(28px, 4vw, 42px)/1.2 system-ui;
+  margin: 12px 0;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.risk-lab p {
+  font: 400 14px/1.6 system-ui;
+  color: #b8c5dc;
+  max-width: 650px;
+}
+
+.risk-lab .lab-status {
+  border: 1px solid #384a65;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #9bdfc4;
+  font: 600 12px system-ui;
+}
+
+.risk-lab .lab-controls {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin: 24px 0;
+}
+
+.risk-lab label {
+  display: grid;
+  gap: 8px;
+  font: 600 12px system-ui;
+  color: #cdd8eb;
+}
+
+.risk-lab select {
+  width: 180px;
+  border: 1px solid #425775;
+  border-radius: 10px;
+  background: #1c2d46;
+  color: white;
+  padding: 11px;
+  font: 14px system-ui;
+}
+
+.risk-lab input[type="range"] {
+  width: 230px;
+  accent-color: #83b4fc;
+}
+
+.risk-lab button {
+  border: 0;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: #12223b;
+  background: #b4d2ff;
+  font: 700 14px system-ui;
+  cursor: pointer;
+}
+
+.risk-lab button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.risk-lab :focus-visible {
+  outline: 3px solid #f5d38a;
+  outline-offset: 4px;
+}
+
+.risk-lab .lab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.risk-lab .lab-stat {
+  background: #1a2a42;
+  border: 1px solid #31435f;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.risk-lab .lab-stat span {
+  color: #a7b8d3;
+  font: 11px system-ui;
+  letter-spacing: 0.05em;
+}
+
+.risk-lab .lab-stat strong {
+  display: block;
+  font: 600 28px system-ui;
+  margin-top: 10px;
+  color: #fff;
+}
+
+.risk-lab .lab-spectrum {
+  display: flex;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #31435f;
+}
+
+.risk-lab .lab-clear {
+  background: #7cdbb4;
+  transition: width 0.3s;
+}
+
+.risk-lab .lab-review {
+  background: #f0bf78;
+  transition: width 0.3s;
+}
+
+.risk-lab .lab-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  font: 12px system-ui;
+  color: #c3d1e6;
+  margin: 10px 0 24px;
+}
+
+.risk-lab .lab-table-wrap {
+  overflow-x: auto;
+}
+
+.risk-lab table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 500px;
+  text-align: left;
+  font: 13px system-ui;
+}
+
+.risk-lab caption {
+  text-align: left;
+  padding-bottom: 12px;
+  color: #c3d1e6;
+}
+
+.risk-lab th {
+  color: #9aaccc;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 12px 10px;
+  border-bottom: 1px solid #3b4d6a;
+}
+
+.risk-lab td {
+  padding: 14px 10px;
+  border-bottom: 1px solid #263a56;
+  color: #dbe5f5;
+}
+
+.risk-lab .lab-pill {
+  font-size: 11px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #203f3b;
+  color: #a8eed0;
+  white-space: nowrap;
+}
+
+.risk-lab .lab-pill.review {
+  background: #4a3929;
+  color: #ffce90;
+}
+
+.risk-lab .lab-reasons {
+  font-size: 11px;
+  margin-top: 8px;
+  color: #a7b8d3;
+}
+
+.risk-lab .lab-note {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .risk-lab {
+    margin: 32px 16px;
+    padding: 24px 18px;
+  }
+
+  .risk-lab .lab-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .risk-lab .lab-controls {
+    align-items: stretch;
+  }
+
+  .risk-lab button {
+    width: 100%;
+  }
+}
